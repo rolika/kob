@@ -1,3 +1,8 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
 /*
 kobozo.dat fileformat:
 1000                                    // first line: precision
@@ -47,6 +52,7 @@ typedef struct {
 } Session;
 
 Session sessions[MAX_NUM_OF_SESSIONS];
+FILE *session_files[MAX_NUM_OF_SESSIONS];
 
 
 void clear_input_buffer(void);
@@ -62,8 +68,7 @@ int remove_session(Session *session);
 void display_session_detail(Session session);
 
 
-void clear_input_buffer(void)
-{
+void clear_input_buffer(void) {
     int c;
     while ((c = getchar()) != '\n' && c != EOF) {
         // Consume characters until newline or end-of-file.
