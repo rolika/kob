@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 
-#define DEBUG
+//#define NDEBUG
 #define MAX_NUM_OF_SESSIONS 50
 
 
@@ -21,7 +21,7 @@ void display_usage(char *executable_name) {
 
 
 int main(int argc, char **argv) {
-    #ifdef DEBUG
+    #ifndef NDEBUG
         printf("%d argumentum\n", argc);
     #endif
     if (argc < 2) {
