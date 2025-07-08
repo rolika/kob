@@ -11,6 +11,7 @@
 #ifndef NDEBUG
 #include <assert.h>
 void test_read_datafile(void);
+void test_read_line_by_line(void);
 #endif
 
 
@@ -21,6 +22,7 @@ int main(int argc, char **argv) {
     #ifndef NDEBUG
         printf("%d argumentum\n", argc);
         test_read_datafile();
+        test_read_line_by_line();
     #endif
     if (argc < 2) {
         display_usage(argv[0]);
@@ -53,6 +55,20 @@ void test_read_datafile(void) {
     while (fgets(line, 40, file) != NULL) {
         printf(line);
     }
+    puts("");
+}
+
+void test_read_line_by_line(void) {
+    FILE *file = fopen(DATAFILE, "r");
+    assert(file != NULL);
+    char line[40];
+    // read and print the first 3 lines
+    fgets(line, 40, file);
+    printf(line);
+    fgets(line, 40, file);
+    printf(line);
+    fgets(line, 40, file);
+    printf(line);
     puts("");
 }
 #endif
