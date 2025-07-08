@@ -3,6 +3,30 @@
 
 //#define NDEBUG
 #define MAX_NUM_OF_SESSIONS 50
+#define DATAFILE "data/kobozo.dat"
+#define MIN_DIAMETER 16
+#define MAX_DIAMETER 24
+#define NUM_OF_DIAMETERS (MAX_DIAMETER - MIN_DIAMETER + 1)
+
+#ifndef NDEBUG
+#include <assert.h>
+void test_read_datafile(void);
+#endif
+
+
+void display_usage(char*);
+
+
+int main(int argc, char **argv) {
+    #ifndef NDEBUG
+        printf("%d argumentum\n", argc);
+        test_read_datafile();
+    #endif
+    if (argc < 2) {
+        display_usage(argv[0]);
+    }
+    return 0;
+}
 
 
 void display_usage(char *executable_name) {
@@ -20,12 +44,15 @@ void display_usage(char *executable_name) {
 }
 
 
-int main(int argc, char **argv) {
-    #ifndef NDEBUG
-        printf("%d argumentum\n", argc);
-    #endif
-    if (argc < 2) {
-        display_usage(argv[0]);
+/* TESTS */
+#ifndef NDEBUG
+void test_read_datafile(void) {
+    FILE *file = fopen(DATAFILE, "r");
+    assert(file != NULL);
+    char line[40];
+    while (fgets(line, 40, file) != NULL) {
+        printf(line);
     }
-    return 0;
+    puts("");
 }
+#endif
