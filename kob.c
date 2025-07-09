@@ -12,6 +12,7 @@
 #include <assert.h>
 void test_read_datafile(void);
 void test_read_line_by_line(void);
+void test_read_exact_data(void);
 #endif
 
 
@@ -20,9 +21,10 @@ void display_usage(char*);
 
 int main(int argc, char **argv) {
     #ifndef NDEBUG
-        printf("%d argumentum\n", argc);
-        test_read_datafile();
-        test_read_line_by_line();
+    printf("%d argumentum\n", argc);
+    test_read_datafile();
+    test_read_line_by_line();
+    test_read_exact_data();
     #endif
     if (argc < 2) {
         display_usage(argv[0]);
@@ -70,5 +72,19 @@ void test_read_line_by_line(void) {
     fgets(line, 40, file);
     printf(line);
     puts("");
+}
+
+void test_read_exact_data(void) {
+    FILE *file = fopen(DATAFILE, "r");
+    assert(file != NULL);
+    // read first line which is the precision, convert to float
+    float precision;
+    assert (fscanf(file, "%lf\n", precision) == 1);
+    printf("Data precision is: %.2f\n", precision);
+    // now where is the file pointer?
+    // read word until colon in the next line and check it is not indented
+    char word[20];
+    assert (fscanf(file, "%19[^:]\n", word) == 1);
+    printf("First woodtype is: %s\n", word);
 }
 #endif
