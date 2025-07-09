@@ -8,6 +8,14 @@
 #define MAX_DIAMETER 24
 #define NUM_OF_DIAMETERS (MAX_DIAMETER - MIN_DIAMETER + 1)
 
+#define skip_to_next_line(file) \
+    do { \
+        int ch; \
+        while ((ch = fgetc(file)) != '\n' && ch != EOF) { \
+            /* skip until end of line */ \
+        } \
+    } while (0)
+
 #ifndef NDEBUG
 #include <assert.h>
 void test_read_datafile(void);
@@ -79,12 +87,20 @@ void test_read_exact_data(void) {
     assert(file != NULL);
     // read first line which is the precision, convert to float
     float precision;
-    assert (fscanf(file, "%lf\n", precision) == 1);
+    assert (fscanf(file, "%f\n", &precision) == 1);
     printf("Data precision is: %.2f\n", precision);
-    // now where is the file pointer?
     // read word until colon in the next line and check it is not indented
     char word[20];
-    assert (fscanf(file, "%19[^:]\n", word) == 1);
+    assert (fscanf(file, "%19[^:]", word) == 1);
     printf("First woodtype is: %s\n", word);
+    skip_to_next_line(file);
+    float length;
+    int volume;
+    int count = fscanf(file, " %f: %d", &length, &volume);
+    printf("%d data read.\n", count);
+    assert(count == 2);
+    printf("First length is: %.2f\n", length);
+    printf("First volume data is: %d\n", volume);
+    printf("Volume taking precision in account: %.2f m3\n", volume * precision);
 }
 #endif
